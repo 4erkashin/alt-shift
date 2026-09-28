@@ -83,11 +83,11 @@ export const Desktop: Story = {
 };
 
 export const TwoK: Story = {
-  ...viewportLocaleStory(GlobalErrorPage, "qhd"),
+  ...viewportLocaleStory(GlobalErrorPage, "2k"),
   name: "2K · 2560 × 1440",
 };
 
 export const FourK: Story = {
-  ...viewportLocaleStory(GlobalErrorPage, "four-k"),
+  ...viewportLocaleStory(GlobalErrorPage, "4k"),
   name: "4K · 3840 × 2160",
 };

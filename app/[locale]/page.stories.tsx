@@ -77,12 +77,12 @@ export const Desktop: Story = {
 };
 
 export const TwoK: Story = {
-  ...viewportLocaleStory(HomePage, "qhd"),
+  ...viewportLocaleStory(HomePage, "2k"),
   name: "2K · 2560 × 1440",
 };
 
 export const FourK: Story = {
-  ...viewportLocaleStory(HomePage, "four-k"),
+  ...viewportLocaleStory(HomePage, "4k"),
   name: "4K · 3840 × 2160",
 };
 

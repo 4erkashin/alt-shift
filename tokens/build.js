@@ -399,16 +399,12 @@ function viewportsFile(tokens) {
     if (!node || typeof node !== "object" || Array.isArray(node)) {
       throw new Error(`viewport.${id} must be a group with width and height`);
     }
-    const name = node.$description;
-    if (typeof name !== "string" || name.length === 0) {
-      throw new Error(`viewport.${id} must have a $description name`);
-    }
     const width = cssPx(tokens, `viewport.${id}.width`);
     const height = cssPx(tokens, `viewport.${id}.height`);
     entries.push(`  {
     height: ${height},
     id: ${jsString(id)},
-    name: ${jsString(name)},
+    name: ${jsString(id)},
     width: ${width},
   },`);
   }
