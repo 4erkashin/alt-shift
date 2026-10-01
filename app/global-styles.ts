@@ -8,7 +8,6 @@ export const globalStyles = stylex.create({
   body: {
     /**
      * Lock the sheet to html. In-flow pages grow in this column.
-     * The page grid overlay is position:fixed, so it is not a slot.
      */
     boxSizing: "border-box",
     display: "flex",

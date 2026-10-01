@@ -10,8 +10,6 @@ import { makeQueryClient } from "@/lib/query/query-client";
 import { captionForLocale } from "@/lib/storybook/locale-captions";
 import { THEME_NAMES, type ThemeName } from "@/theme/cookie";
 import { viewports } from "@/tokens/generated/viewports";
-import { PageGridOverlay } from "@/ui/page-grid";
-
 import { mswHandlers } from "./msw-handlers";
 import nextIntl from "./next-intl";
 import { ThemeHtml } from "./theme-iframe";
@@ -62,13 +60,11 @@ const preview: Preview = {
       const theme = (context.parameters.themes?.themeOverride ||
         pluckThemeFromContext(context) ||
         "system") as ThemeName;
-      const pageGridOn = context.globals.pageGrid === "on";
 
       return (
         <ThemeHtml theme={theme}>
           <StoryQueryRoot key={context.id}>
             <MotionProvider>
-              {pageGridOn ? <PageGridOverlay /> : null}
               <Story />
             </MotionProvider>
           </StoryQueryRoot>
@@ -76,23 +72,9 @@ const preview: Preview = {
       );
     },
   ],
-  globalTypes: {
-    pageGrid: {
-      description: "Page grid overlay",
-      toolbar: {
-        dynamicTitle: true,
-        items: [
-          { title: "Grid off", value: "off" },
-          { title: "Grid on", value: "on" },
-        ],
-        title: "Grid",
-      },
-    },
-  },
   initialGlobals: {
     locale: nextIntl.defaultLocale,
     locales: localeToolbarCaptions,
-    pageGrid: "off",
   },
   loaders: [mswLoader()],
   parameters: {
@@ -119,8 +101,8 @@ const preview: Preview = {
     },
 
     /**
-     * Canvas Code tab is off. A cookbook file sets docs.codePanel: true.
-     * One story can set it false again if that example should not show source.
+     * Canvas Code tab is off. A story can set docs.codePanel: true
+     * when that example should show source.
      */
     docs: {
       codePanel: false,
@@ -144,8 +126,6 @@ const preview: Preview = {
           "UI",
           "Tokens",
           ["Primitive colors", "Semantic colors"],
-          "Cookbooks",
-          ["StyleX", "Motion", "Intl"],
         ],
       },
     },

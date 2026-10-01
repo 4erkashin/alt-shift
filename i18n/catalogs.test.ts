@@ -1,9 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { expect, expectTypeOf, test } from "vitest";
+import { expect, test } from "vitest";
 
 import { messagesByLocale } from "../lib/storybook/messages-by-locale";
-import en from "./catalogs/en";
 import { loadMessages, messageLoaders } from "./load-messages";
 import { routing } from "./routing";
 
@@ -122,5 +121,3 @@ test("feature-local catalogs match locales, namespaces, and loaders", async () =
     expect(messagesByLocale[locale]).toEqual(merged);
   }
 });
-
-expectTypeOf(en.CookbookIntl.itemCount).not.toEqualTypeOf<string>();

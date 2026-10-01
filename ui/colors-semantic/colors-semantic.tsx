@@ -8,17 +8,11 @@ import { wcag2ContrastRatio } from "./wcag-contrast";
 
 const lightForeground = semanticPaint("light", "foreground");
 const lightBackground = semanticPaint("light", "background");
-const lightPrimary = semanticPaint("light", "primary");
 const darkForeground = semanticPaint("dark", "foreground");
 const darkBackground = semanticPaint("dark", "background");
-const darkPrimary = semanticPaint("dark", "primary");
 const foregroundContrast = {
-  dark: contrastInfo(darkForeground, darkBackground, "frost", "night"),
-  light: contrastInfo(lightForeground, lightBackground, "ink", "frost"),
-};
-const primaryContrast = {
-  dark: contrastInfo(darkPrimary, darkBackground, "coral", "night"),
-  light: contrastInfo(lightPrimary, lightBackground, "ink", "frost"),
+  dark: contrastInfo(darkForeground, darkBackground, "white", "night"),
+  light: contrastInfo(lightForeground, lightBackground, "ink", "white"),
 };
 
 type ContrastInfo = { apca: string; pair: string; wcag: string };
@@ -36,7 +30,7 @@ export function ColorsSemantic() {
           aria-label="Background colors by theme"
           {...stylex.props(styles.swatches)}
         >
-          <BackgroundColumn primitive="frost" theme={light} themeName="light" />
+          <BackgroundColumn primitive="white" theme={light} themeName="light" />
           <BackgroundColumn primitive="night" theme={dark} themeName="dark" />
         </div>
       </section>
@@ -60,33 +54,7 @@ export function ColorsSemantic() {
           />
           <ForegroundColumn
             contrast={foregroundContrast.dark}
-            primitive="frost"
-            theme={dark}
-            themeName="dark"
-          />
-        </div>
-      </section>
-      <section {...stylex.props(styles.section)}>
-        <header {...stylex.props(styles.header)}>
-          <p {...stylex.props(styles.kicker)}>Semantic color / 03</p>
-          <h2 {...stylex.props(styles.title)}>What is primary?</h2>
-          <p {...stylex.props(styles.purpose)}>
-            Use this color to attract the attention, to fill a button and etc.
-          </p>
-        </header>
-        <div
-          aria-label="Primary colors and contrast by theme"
-          {...stylex.props(styles.swatches)}
-        >
-          <PrimaryColumn
-            contrast={primaryContrast.light}
-            primitive="ink"
-            theme={light}
-            themeName="light"
-          />
-          <PrimaryColumn
-            contrast={primaryContrast.dark}
-            primitive="coral"
+            primitive="white"
             theme={dark}
             themeName="dark"
           />
@@ -152,40 +120,6 @@ function ForegroundColumn({
   );
 }
 
-function PrimaryColumn({
-  contrast,
-  primitive,
-  theme,
-  themeName,
-}: {
-  contrast: ContrastInfo;
-  primitive: string;
-  theme: typeof dark | typeof light;
-  themeName: string;
-}) {
-  return (
-    <figure {...stylex.props(styles.swatch)}>
-      <div {...stylex.props(theme, styles.paint, styles.primaryPaint)} />
-      <figcaption {...stylex.props(styles.label)}>
-        <span>Theme / {themeName}</span>
-        <span>Primitive / {primitive}</span>
-      </figcaption>
-      <div {...stylex.props(styles.contrastSpecimen)}>
-        <div {...stylex.props(theme, styles.paint, styles.surfaceContrast)}>
-          <div
-            {...stylex.props(styles.primaryPaint, styles.surfaceOnSurface)}
-          />
-        </div>
-        <div {...stylex.props(styles.contrastReadout)}>
-          <span>{contrast.pair}</span>
-          <span>WCAG 2 / {contrast.wcag}</span>
-          <span>APCA / {contrast.apca}</span>
-        </div>
-      </div>
-    </figure>
-  );
-}
-
 function contrastInfo(
   foreground: string,
   background: string,
@@ -203,7 +137,7 @@ function contrastInfo(
 
 function semanticPaint(
   theme: "dark" | "light",
-  name: "background" | "foreground" | "primary",
+  name: "background" | "foreground",
 ): string {
   const value = tokens[theme].color[name].$value;
   const matched = /^\{color\.([^}]+)\}$/.exec(value);
@@ -285,17 +219,6 @@ const styles = stylex.create({
   },
   foregroundPaint: {
     backgroundColor: colors.foreground,
-  },
-  primaryPaint: {
-    backgroundColor: colors.primary,
-  },
-  surfaceContrast: {
-    boxSizing: "border-box",
-    display: "flex",
-    padding: spacing.lg,
-  },
-  surfaceOnSurface: {
-    flexGrow: 1,
   },
   contrastSpecimen: {
     display: "flex",

@@ -6,14 +6,11 @@ import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locale } from "next/root-params";
-import { type ReactNode, Suspense, ViewTransition } from "react";
+import { type ReactNode, ViewTransition } from "react";
 
 import { globalStyles, htmlPropsForTheme } from "@/app/global-styles";
 import { routing } from "@/i18n/routing";
 import { getTheme, jetbrainsMono, onest } from "@/theme";
-import { PageGridOverlay } from "@/ui/page-grid";
-import { PageGridOverlayGate } from "@/ui/page-grid/page-grid-overlay-gate";
-
 import { version } from "../../package.json";
 import { Providers } from "../providers";
 
@@ -112,12 +109,6 @@ export default async function RootLayout({
       lang={currentLocale}
     >
       <body {...stylex.props(globalStyles.body)}>
-        <Suspense fallback={null}>
-          <PageGridOverlayGate>
-            <PageGridOverlay />
-          </PageGridOverlayGate>
-        </Suspense>
-
         <ViewTransition>
           <Providers>{children}</Providers>
         </ViewTransition>

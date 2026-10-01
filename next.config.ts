@@ -29,7 +29,6 @@ const withNextIntl = createNextIntlPlugin({
     createMessagesDeclaration: [
       "./app/[locale]/messages/en.json",
       "./features/theme-switcher/messages/en.json",
-      "./ui/cookbook-intl/messages/en.json",
     ],
   },
 });

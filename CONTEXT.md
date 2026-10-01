@@ -5,7 +5,7 @@ The vocabulary for the product's visual decisions. The look is editorial: typogr
 ## Tokens
 
 **Primitive token**:
-A named raw material such as a paint, spacing step, duration, or curve.
+A named raw material such as a paint or a spacing step.
 _Avoid_: foundation token, core token, palette (as a layer name)
 
 **Module**:
@@ -25,7 +25,7 @@ A named exact width and height used to inspect composition. Phone SM and Phone M
 _Avoid_: rung, review size, layout breakpoint, device (as the object), story (as the object)
 
 **Semantic token**:
-A purpose name with a value in every theme. Today these are background, foreground, and primary.
+A purpose name with a value in every theme. Today these are background and foreground.
 _Avoid_: alias token, decision token (except in prose about token systems)
 
 **Theme**:
@@ -69,19 +69,3 @@ _Avoid_: highlight, tint, hover color
 **Signal**:
 A brief visual event that calls attention to a meaningful change. A signal is not ambient decoration.
 _Avoid_: idle effect, visual noise
-
-**Glitch**:
-A short hard break in the image that then stops. It is a signal, not a resting state.
-_Avoid_: noise, distortion (as the product name)
-
-**Color split**:
-Two accent colors offset from the source for a short signal, often paired with a glitch.
-_Avoid_: chromatic aberration, RGB split, fringing
-
-**Glitch color**:
-The first accent channel of a color split.
-_Avoid_: red channel
-
-**Glitch pair**:
-The second accent channel of a color split, offset in the opposite direction.
-_Avoid_: blue channel

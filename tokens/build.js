@@ -28,8 +28,7 @@ async function resolveSets(sets) {
     format: ({ dictionary }) => {
       for (const token of dictionary.allTokens) {
         const value = token.$value ?? token.value;
-        const type = token.$type ?? token.type;
-        values.set(token.path.join("."), stringifyValue(value, type));
+        values.set(token.path.join("."), stringifyValue(value));
       }
       return "";
     },
@@ -52,7 +51,7 @@ async function resolveSets(sets) {
     },
     preprocessors: ["tokens-studio"],
     /**
-     * Pick the sets for this theme. Aliases are `{color.frost}` and
+     * Pick the sets for this theme. Aliases are `{color.ink}` and
      * `{grid.module}`, without the set name. The tokens-studio
      * preprocessor removes those set wrappers next, and metadata is
      * not token input.
@@ -71,109 +70,15 @@ async function resolveSets(sets) {
   return values;
 }
 
-const reducedMotionQuery = "@media (prefers-reduced-motion: reduce)";
-const moveDurationKey = "motion.duration.move";
-const noneDurationKey = "motion.duration.none";
-
 /**
- * Style Dictionary has no duration/css transform. DTCG duration objects and
- * cubic-bezier arrays have to become CSS here or the capture step writes
- * "[object Object]".
- *
  * @param {unknown} value
- * @param {unknown} type
  * @returns {string}
  */
-function stringifyValue(value, type) {
-  if (type === "duration") {
-    return formatDuration(value);
-  }
-  if (type === "cubicBezier") {
-    return formatCubicBezier(value);
-  }
-  if (typeof value === "string") {
-    return value;
-  }
-  if (typeof value === "number") {
+function stringifyValue(value) {
+  if (typeof value === "string" || typeof value === "number") {
     return String(value);
   }
-  if (Array.isArray(value)) {
-    return value.map(String).join(", ");
-  }
-  return String(value);
-}
-
-/**
- * @param {unknown} value
- * @returns {string}
- */
-function formatDuration(value) {
-  if (typeof value === "string") {
-    return value;
-  }
-  if (
-    value !== null &&
-    typeof value === "object" &&
-    "value" in value &&
-    "unit" in value &&
-    (value.unit === "ms" || value.unit === "s") &&
-    typeof value.value === "number"
-  ) {
-    return `${value.value}${value.unit}`;
-  }
-  throw new Error(`Cannot format duration token: ${JSON.stringify(value)}`);
-}
-
-/**
- * @param {unknown} value
- * @returns {string}
- */
-function formatCubicBezier(value) {
-  if (typeof value === "string") {
-    return value;
-  }
-  if (
-    Array.isArray(value) &&
-    value.length === 4 &&
-    value.every((point) => typeof point === "number")
-  ) {
-    return `cubic-bezier(${value.join(", ")})`;
-  }
-  throw new Error(`Cannot format cubicBezier token: ${JSON.stringify(value)}`);
-}
-
-/**
- * Motion tweens want seconds, not CSS time strings.
- *
- * @param {string} cssTime
- * @returns {number}
- */
-function cssTimeToSeconds(cssTime) {
-  if (cssTime.endsWith("ms")) {
-    return Number(cssTime.slice(0, -2)) / 1000;
-  }
-  if (cssTime.endsWith("s")) {
-    return Number(cssTime.slice(0, -1));
-  }
-  throw new Error(`Cannot parse CSS time: ${cssTime}`);
-}
-
-/**
- * Motion `ease` is a four-number bezier, not the CSS cubic-bezier() string.
- *
- * @param {string} cssEasing
- * @returns {number[]}
- */
-function cubicBezierPoints(cssEasing) {
-  const matched = /^cubic-bezier\((.+)\)$/.exec(cssEasing);
-  if (!matched) {
-    throw new Error(`Cannot parse cubic-bezier: ${cssEasing}`);
-  }
-  const points = matched[1].split(",").map((part) => Number(part.trim()));
-  if (points.length !== 4 || points.some((point) => Number.isNaN(point))) {
-    throw new Error(`Cannot parse cubic-bezier: ${cssEasing}`);
-  }
-  return points;
+  throw new Error(`Cannot format token value: ${JSON.stringify(value)}`);
 }
 
 /**
@@ -202,37 +107,6 @@ function keysWithPrefix(tokens, prefix) {
  */
 function leafName(key, prefix) {
   return key.slice(prefix.length + 1).replaceAll(".", "_");
-}
-
-/**
- * @param {Map<string, string>} tokens
- * @returns {string[]}
- */
-function motionVarLines(tokens) {
-  const keys = keysWithPrefix(tokens, "motion");
-  if (keys.length === 0) {
-    throw new Error(
-      "tokens/tokens.json primitive set must define motion tokens",
-    );
-  }
-  const none = tokens.get(noneDurationKey);
-  if (!none) {
-    throw new Error(
-      "tokens/tokens.json primitive set must define motion.duration.none",
-    );
-  }
-
-  return keys.map((key) => {
-    const name = leafName(key, "motion");
-    const value = tokens.get(key);
-    if (key === moveDurationKey) {
-      return `  ${name}: {
-    default: ${jsString(value)},
-    ${jsString(reducedMotionQuery)}: ${jsString(none)},
-  },`;
-    }
-    return `  ${name}: ${jsString(value)},`;
-  });
 }
 
 // Read declarations before set merging so primitives remain reference-only.
@@ -274,7 +148,6 @@ function varsFile(light, colorKeys) {
   const gridLines = keysWithPrefix(light, "grid").map(
     (key) => `  ${leafName(key, "grid")}: ${jsString(light.get(key))},`,
   );
-  const motionLines = motionVarLines(light);
 
   return `/* Generated by tokens/build.js. Do not edit. */
 
@@ -292,24 +165,8 @@ export const grid = stylex.defineVars({
 ${gridLines.join("\n")}
 });
 
-export const motion = stylex.defineVars({
-${motionLines.join("\n")}
-});
-
 export const spacing = stylex.defineVars({
 ${spaceLines.join("\n")}
-});
-`;
-}
-
-/** Reduced-motion media query. */
-function queriesFile() {
-  return `/* Generated by tokens/build.js. Do not edit. */
-
-import * as stylex from "@stylexjs/stylex";
-
-export const queries = stylex.defineConsts({
-  reducedMotion: ${jsString(reducedMotionQuery)},
 });
 `;
 }
@@ -425,33 +282,6 @@ export type ViewportId = (typeof viewports)[number]["id"];
 `;
 }
 
-/**
- * Canonical no-preference timings for Motion tweens. Reduced motion is
- * MotionConfig's job, not this file.
- *
- * @param {Map<string, string>} tokens
- * @returns {string}
- */
-function motionTimeFile(tokens) {
-  const fade = tokens.get("motion.duration.fade");
-  const move = tokens.get("motion.duration.move");
-  const easing = tokens.get("motion.easing.standard");
-  if (!fade || !move || !easing) {
-    throw new Error(
-      "tokens/tokens.json primitive set must define motion.duration.fade, motion.duration.move, and motion.easing.standard",
-    );
-  }
-
-  return `/* Generated by tokens/build.js. Do not edit. */
-
-export const motionTime = {
-  easingStandard: [${cubicBezierPoints(easing).join(", ")}],
-  fade: ${cssTimeToSeconds(fade)},
-  move: ${cssTimeToSeconds(move)},
-} as const;
-`;
-}
-
 const themedColorKeys = semanticColorKeys("light");
 if (
   JSON.stringify(themedColorKeys) !== JSON.stringify(semanticColorKeys("dark"))
@@ -505,16 +335,8 @@ await writeIfChanged(
   varsFile(light, colorKeys),
 );
 await writeIfChanged(
-  path.join(generatedDir, "queries.stylex.ts"),
-  queriesFile(),
-);
-await writeIfChanged(
   path.join(generatedDir, "themes.ts"),
   themesFile(light, dark, themedColorKeys),
-);
-await writeIfChanged(
-  path.join(generatedDir, "motion.ts"),
-  motionTimeFile(light),
 );
 await writeIfChanged(
   path.join(generatedDir, "viewports.ts"),

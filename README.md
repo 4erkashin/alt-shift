@@ -66,10 +66,8 @@ Locales live in `i18n/routing.ts`: English is unprefixed (`/`), the others are `
 `tokens/tokens.json` → gitignored `tokens/generated/`. Do not edit generated files. `dev`, `typecheck`, `storybook`, and `build` generate first. `dev` and `storybook` then watch the token sources and rebuild.
 
 - Themes: `light` / `dark` / `system` from `@/tokens/generated/themes`.
-- Motion tweens: `tokens/generated/motion.ts`. Reduced motion is `MotionConfig`.
 - `stylex.create`; nest conditions on the property.
-- CSS motion: generated `motion` vars + `queries.reducedMotion`. Cookbook: `ui/cookbook-stylex/`.
-- `motion/react`: layout / drag / sequence, not hover color. Cookbook: `ui/cookbook-motion/`.
+- `motion/react`: layout / drag / sequence, not hover color. Reduced motion is `MotionConfig`.
 - Next: Babel + PostCSS. Storybook: `@stylexjs/unplugin` + addon-themes (toolbar ≠ cookie).
 - Reset: `modern-normalize`, then a `preflight` layer: UA block margins off; headings inherit size and weight; links inherit color and decoration.
 

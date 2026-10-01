@@ -8,12 +8,11 @@ import { join } from "node:path";
 import { routing } from "@/i18n/routing";
 
 /**
- * Satori paints hex. These are the night, frost, and coral
- * primitives from `tokens/tokens.json`.
+ * Satori paints hex. These are the night and white primitives
+ * from `tokens/tokens.json`.
  */
 const night = "#07161d";
-const frost = "#e9f0f3";
-const coral = "#f36358";
+const white = "#ffffff";
 
 /** Word counts for the deliberate three-line title breaks in each locale. */
 const titleLineWordCounts = {
@@ -96,7 +95,7 @@ export default async function OpenGraphImage({
     <div
       style={{
         backgroundColor: night,
-        color: frost,
+        color: white,
         display: "flex",
         fontFamily: "Onest",
         height: "100%",
@@ -106,7 +105,7 @@ export default async function OpenGraphImage({
     >
       <div
         style={{
-          backgroundColor: coral,
+          backgroundColor: white,
           display: "flex",
           marginRight: 40,
           width: 10,

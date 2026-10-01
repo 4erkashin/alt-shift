@@ -8,8 +8,6 @@ import { Link } from "@/i18n/navigation";
 import { colors, fonts, grid, spacing } from "@/tokens/generated/tokens.stylex";
 import { pageGridStyles } from "@/ui/page-grid";
 
-import { ErrorTitle } from "./error-title";
-
 export type ErrorWidgetProps = {
   action: ErrorWidgetAction;
   description: string;
@@ -157,9 +155,7 @@ export function ErrorWidget({
   return (
     <main {...stylex.props(pageGridStyles.root)}>
       <div {...stylex.props(styles.copy)}>
-        <h1>
-          <ErrorTitle>{title}</ErrorTitle>
-        </h1>
+        <h1>{title}</h1>
         <p {...stylex.props(styles.description)}>{description}</p>
         <ErrorAction action={action} />
       </div>

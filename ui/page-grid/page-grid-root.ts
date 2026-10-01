@@ -1,8 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 
 /**
- * Equal modules on the sheet. Overlay children must use this same
- * count so the painted tracks match the template.
+ * Equal columns on the sheet. Home and the error page share this count.
  */
 export const PAGE_GRID_COLUMNS = 12;
 
