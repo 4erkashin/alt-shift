@@ -6,6 +6,7 @@
   },
   "HomePage": {
     "description": "— в <storybook>Storybook</storybook> есть примеры ;)",
+    "menu": "Меню",
     "title": "Замените как будете готовы"
   },
   "Metadata": {

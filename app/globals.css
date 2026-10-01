@@ -57,6 +57,15 @@
     color: inherit;
     text-decoration: inherit;
   }
+
+  /**
+   * Mobile browsers paint a translucent color on the element you
+   * tap. The property is inherited, so the document root covers
+   * buttons and links. Keyboard focus still uses the focus ring.
+   */
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 @stylex;

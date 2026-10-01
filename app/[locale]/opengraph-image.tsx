@@ -82,8 +82,8 @@ export default async function OpenGraphImage({
   });
 
   /**
-   * `<storybook>` is a link on the page. `markup` keeps the
-   * words inside the tag and drops the tag itself.
+   * `<storybook>` wraps a name in the catalog. `markup` keeps
+   * the words and drops the tag.
    */
   const description = t
     .markup("description", {

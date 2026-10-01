@@ -96,8 +96,6 @@ const config: StorybookConfig = {
     const mode =
       process.env.NODE_ENV === "production" ? "production" : "development";
     const fileEnv = loadEnv(mode, repoRoot, "");
-    const storybookUrl =
-      process.env.STORYBOOK_URL || fileEnv.STORYBOOK_URL || "";
     const storybookOgBaseUrl =
       process.env.STORYBOOK_OG_BASE_URL ||
       fileEnv.STORYBOOK_OG_BASE_URL ||
@@ -111,7 +109,6 @@ const config: StorybookConfig = {
       },
       define: {
         "process.env.STORYBOOK_OG_BASE_URL": JSON.stringify(storybookOgBaseUrl),
-        "process.env.STORYBOOK_URL": JSON.stringify(storybookUrl),
       },
       plugins: [
         /**

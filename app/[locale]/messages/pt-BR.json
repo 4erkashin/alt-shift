@@ -6,6 +6,7 @@
   },
   "HomePage": {
     "description": "— o <storybook>Storybook</storybook> tem exemplos ;)",
+    "menu": "Menu",
     "title": "Troque quando quiser"
   },
   "Metadata": {

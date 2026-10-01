@@ -29,11 +29,9 @@ const meta = {
     docs: {
       description: {
         component: `
-Home page as a single 100dvh poster. Portrait uses Monumental Cut:
-locale stacked on the left rail, version covering the field, copy
-under that field, and theme as a row on the bottom-right with the
-cut on the sheet edge. Landscape keeps the wide column-and-version
-composition.
+Home is the logomark. It opens a drawer on the bottom edge in
+portrait and on the left edge in landscape. Theme and locale
+switchers are inside that drawer.
 
 Each viewport story is one named size. Tiles inside it are
 English on the left and one other locale on the right, then
