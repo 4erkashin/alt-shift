@@ -183,7 +183,7 @@ const styles = stylex.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 0,
-    color: colors.foreground,
+    color: colors.homeIcon,
     cursor: "pointer",
     outlineWidth: spacing.px,
     outlineStyle: "solid",
